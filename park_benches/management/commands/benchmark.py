@@ -60,7 +60,7 @@ class Command(BaseCommand):
         self._select_parks_with_encoding(park_model=ParkB, bench_model=BenchB)
         end = timer()
         delta_b = end - start
-        self.stdout.write("Selecting by ID with encoding/decoding to string took {} seconds for {}".format(delta_b, ParkB._meta.verbose_name_plural))
+        self.stdout.write("Selecting by ID with base58 encoding/decoding to string took {} seconds for {}".format(delta_b, ParkB._meta.verbose_name_plural))
 
         start = timer()
         self._select_parks(park_model=ParkC, bench_model=BenchC)
