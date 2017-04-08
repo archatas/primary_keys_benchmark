@@ -10,7 +10,7 @@ Instead of the default numeric incremental ID, it is possible to use [UUIDField]
 
 ## What is this project about?
 
-This experimental will measure how fast various database operations take, when we use different types of primary keys.
+This experimental project will measure how fast various database operations take, when we use different types of primary keys.
 
 Let's say, that there is a list of parks each of them having some amount of benches to take a rest on a sunny day. We will implement that with `Park` model and `Bench` model with a foreign key to the `Park` model. For our benchmark tests, we'll create three types of `Park` and `Bench` models: 
 
