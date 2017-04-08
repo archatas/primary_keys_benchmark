@@ -111,6 +111,8 @@ class Command(BaseCommand):
         # testing selects by ids also encoding and decoding to base58
         import uuid
         from park_benches.base58 import b58encode, b58decode
+        # base58 is like base64, but the following similar-looking letters are omitted:
+        # 0 (zero), O (capital o), I (capital i) and l (lower case L) as well as the non-alphanumeric characters + (plus) and / (slash).
         for park in bench_model.objects.all():
             # The encoded_id like "EnEZfZ79Dk7UPbyntGeU8U" will be used in URLs and APIs
             encoded_id = b58encode(park.pk.bytes)
