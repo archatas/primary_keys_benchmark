@@ -1,6 +1,8 @@
 # -*- coding: UTF-8 -*-
 from __future__ import unicode_literals
 import shortuuid
+import string
+import random
 
 from django.conf import settings
 from django.db import models
@@ -11,7 +13,9 @@ RANDOM_UNIQUE_ID_LENGTH = getattr(settings, "RANDOM_UNIQUE_ID_LENGTH", 12)
 
 
 def get_new_id():
-    return shortuuid.ShortUUID().random(length=RANDOM_UNIQUE_ID_LENGTH)
+    alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+    return "".join(random.choices(alphabet, k=RANDOM_UNIQUE_ID_LENGTH))
+    # return shortuuid.ShortUUID().random(length=RANDOM_UNIQUE_ID_LENGTH)
 
 
 class RandomUniqueIdMixin(models.Model):

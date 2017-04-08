@@ -5,7 +5,7 @@ import uuid
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
-from .base import RandomUniqueIdMixin
+from .model_mixins import RandomUniqueIdMixin
 
 @python_2_unicode_compatible
 class ParkA(models.Model):
