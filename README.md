@@ -2,34 +2,31 @@
 
 ## Problem
 
-Default primary keys reveal the count of available objects in the database and allow to easily guess the previous and next created objects when the id is used in the URL.
+Default primary keys reveal the number of available objects in the database. Also they allow to easily guess the previous and next created objects when the ID is used in the URL.
 
-Sometimes that might be not the wanted behavior.
+Sometimes that might be not the wanted behaviour.
 
-It is possible instead of the default numeric incremental id to use UUIDField or CharField for the primary key.
+Instead of the default numeric incremental ID, it is possible to use UUIDField or CharField for the primary key. But which one should we use in our projects?
 
 ## What is this project about?
 
-This test project is measuring operations on the database for objects with different types of primary keys:
+This project will measure how fast various database operations take, when we use different types of primary keys.
 
-- The usual numeric incremental IDs,
-- UUID based IDs (will be base58-encoded when used in URLs and APIs, the encoded length is 22 characters),
-- Random string IDs (the length used here is 10-12 characters).
+Let's say, that there is a list of parks each of them having some amount of benches to take a rest on a sunny day. We will implement that with Park model and Bench model with a foreign key to the Park model. For our benchmark tests, we'll create three types of Park and Bench models: 
 
-To test the performance speeds and database sizes, in this project we create a list of parks each of them having some amount of benches.
+- Type A - park and bench models will use the usual numeric incremental IDs,
+- Type B - park and bench models will use UUID-based IDs,
+- Type C - park and bench models will use random character string IDs.
 
-We will have three types of park and bench models:
+We expect the IDs of Type B to be unique because of UUID format. It is long enough (32 hexadecimal characters plus 4 hyphens) not to clash. And to generate it, different bits of the current timestamp and 12 random hex digits are used. When used in URLs and APIs, the UUID will be base58-encoded and its length will be 22 characters. The base58 encoding is like base64, but the following similar-looking characters are omitted: 0 (zero), O (capital o), I (capital i) and l (lower case L) as well as the non-alphanumeric characters + (plus) and / (slash).
 
-- Type A will be using the numeric IDs.
-- Type B will be using UUID (uniqueness is expected from the uuid algorithm).
-- Type C will be using random-string IDs (the IDs are recreated until they are unique).
+To ensure that a random-string ID is unique, we will recreate it until it doesn't clash with existing IDs in the database. The length used in our tests will be 10-12 characters.
 
-We'll be measuring the speed of creation, selection by ID, and filtering by a joined table for each type.
-Also we will check the differences of the size of each database table.
+We'll be measuring the speed of creation, selection by ID, and filtering by a joined table for each type. Also we will check the differences of the size of each database table.
 
 ## Usage
 
-The project is expected to use PostgreSQL with database name and user name "primary\_keys\_benchmark" and empty password:
+We will use PostgreSQL database. The database name and user name will be "primary\_keys\_benchmark" and the password will be empty:
 
     $ createuser -d primary_keys_benchmark
     $ createdb -U primary_keys_benchmark primary_keys_benchmark
@@ -45,7 +42,7 @@ To measure database operations, run:
 
 ## Results
 
-The benchmark tests were using Django 1.11 on Python 3.6, Mac OS X 10.12.3.
+I ran the benchmark tests on my machine using Django 1.11, Python 3.6.0, PostgreSQL 9.5.1, and Mac OS X 10.12.3.
 
 When the length of random string ID was 12 characters, 
 the benchmark results were similar to these:
@@ -120,6 +117,6 @@ the benchmark results were similar to these:
 - Selecting element by id is faster with random strings rather than with UUID fields.
 - Joins are faster with random string fields than UUID fields.
 
-So UUID wins against random string ids in write-heavy situations where you also need to save disk space.
+So UUID wins against random character string IDs in write-heavy situations where you also need to save disk space.
 
-Random string ids win against UUID when performance speed is necessary and the representation in URL and APIs should be much shorter.
+Random character string IDs win against UUID when speedy performance is necessary and the representation in URL and APIs should be much shorter.

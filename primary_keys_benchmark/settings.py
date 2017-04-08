@@ -56,3 +56,7 @@ USE_I18N = False
 USE_L10N = False
 
 USE_TZ = True
+
+# Change this if you want to have a different length of random character string IDs,
+# then recreate the database and migrations for park_benches app.
+RANDOM_UNIQUE_ID_LENGTH = 12
